@@ -5,6 +5,7 @@ authors = []
 
 [addresses]
 MoonCoin = "ad3962458c2b2872fae70cc4dd48466815f21037e7217124ecd2b0da3896e1ca"
+FACoin = "0xa816be8abfbcb2c61fd5032715a8ff4155fd19ad67b379c4482bf0a10d320ed9"
 
 [dev-addresses]
 
