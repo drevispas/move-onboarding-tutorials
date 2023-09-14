@@ -32,8 +32,8 @@ class MoonCoinClient extends AptosClient {
     }
   }
 
-  async registerCoin(coinTypeAddress:HexString, coinReceiver:AptosAccount): Promise<string> {
-    const rawTx=await this.generateTransaction(
+  async registerCoin(coinTypeAddress: HexString, coinReceiver: AptosAccount): Promise<string> {
+    const rawTx = await this.generateTransaction(
         coinReceiver.address(), {
           // managed_coin:register() publishes `CoinStore` under the sender.
           function: "0x1::managed_coin::register",
@@ -41,32 +41,32 @@ class MoonCoinClient extends AptosClient {
           arguments: []
         }
     )
-    const bcsTx=await this.signTransaction(coinReceiver,rawTx)
-    const pendingTx=await this.submitTransaction(bcsTx)
+    const bcsTx = await this.signTransaction(coinReceiver, rawTx)
+    const pendingTx = await this.submitTransaction(bcsTx)
     return pendingTx.hash
   }
 
   async mintCoin(minter: AptosAccount, receiverAddress: HexString, amount: number | bigint) {
-    const rawTx=await this.generateTransaction(minter.address(), {
+    const rawTx = await this.generateTransaction(minter.address(), {
       function: "0x1::managed_coin::mint",
       type_arguments: [`${minter.address()}::moon_coin::MoonCoin`],
       arguments: [receiverAddress.hex(), amount]
     })
-    const bcsTx=await this.signTransaction(minter,rawTx)
-    const pendingTx=await this.submitTransaction(bcsTx)
+    const bcsTx = await this.signTransaction(minter, rawTx)
+    const pendingTx = await this.submitTransaction(bcsTx)
     return pendingTx.hash
   }
 
   async transferCoin(sender: AptosAccount, receiverAddress: HexString, amount: number) {
-    const rawTx=await this.generateTransaction(sender.address(), {
+    const rawTx = await this.generateTransaction(sender.address(), {
       /// Convenient function to transfer a custom CoinType to a recipient account that might not exist.
       /// This would create the recipient account first and register it to receive the CoinType, before transferring.
       function: "0x1::aptos_account::transfer_coins",
       type_arguments: [`${sender.address()}::moon_coin::MoonCoin`],
       arguments: [receiverAddress.hex(), amount]
     })
-    const bcsTx=await this.signTransaction(sender,rawTx)
-    const pendingTx=await this.submitTransaction(bcsTx)
+    const bcsTx = await this.signTransaction(sender, rawTx)
+    const pendingTx = await this.submitTransaction(bcsTx)
     return pendingTx.hash
   }
 }
@@ -113,18 +113,18 @@ async function main() {
 
 
   console.log("\n=== Registering CoinStore of MoonCoin ===")
-  txHash=await client.registerCoin(sender.address(), sender)
-  await client.waitForTransaction(txHash,{checkSuccess:true})
+  txHash = await client.registerCoin(sender.address(), sender)
+  await client.waitForTransaction(txHash, {checkSuccess: true})
 
   console.log("\n=== Sender mints some of the Moon coins ===")
-  txHash=await client.mintCoin(sender, sender.address(), 100);
-  await client.waitForTransaction(txHash, {checkSuccess:true})
+  txHash = await client.mintCoin(sender, sender.address(), 100);
+  await client.waitForTransaction(txHash, {checkSuccess: true})
   console.log(`Sender's MoonCoin balance: ${await client.getBalance(ACCOUNT_ADDRESS, sender.address())}`)
   console.log(`Bob's MoonCoin balance: ${await client.getBalance(bob.address(), sender.address())}`)
 
   console.log("\n=== Sender transfers bob some Moon coins ===")
-  txHash=await client.transferCoin(sender, bob.address(), 35);
-  await client.waitForTransaction(txHash, {checkSuccess:true})
+  txHash = await client.transferCoin(sender, bob.address(), 35);
+  await client.waitForTransaction(txHash, {checkSuccess: true})
   console.log(`Sender's MoonCoin balance: ${await client.getBalance(ACCOUNT_ADDRESS, sender.address())}`)
   console.log(`Bob's MoonCoin balance: ${await client.getBalance(bob.address(), sender.address())}`)
 }
