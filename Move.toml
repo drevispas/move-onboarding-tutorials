@@ -1,17 +1,20 @@
 [package]
-name = "Tutorial"
+name = "Examples"
 version = "1.0.0"
 authors = []
 
 [addresses]
+# `aptos move compile --save-metadata` refers the following addresses as the module owner.
 MoonCoin = "ad3962458c2b2872fae70cc4dd48466815f21037e7217124ecd2b0da3896e1ca"
-FACoin = "0xa816be8abfbcb2c61fd5032715a8ff4155fd19ad67b379c4482bf0a10d320ed9"
+#FACoin = "ad3962458c2b2872fae70cc4dd48466815f21037e7217124ecd2b0da3896e1ca"
+FACoin = "_"
 
 [dev-addresses]
 
 [dependencies.AptosFramework]
 git = "https://github.com/aptos-labs/aptos-core.git"
-rev = "mainnet"
+#rev = "mainnet"
+rev = "devnet"
 subdir = "aptos-move/framework/aptos-framework"
 
 [dev-dependencies]
